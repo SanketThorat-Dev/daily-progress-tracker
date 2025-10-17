@@ -1,4 +1,1 @@
-From: me
-Subject: Re: Daily Progress Reminder 📬
-
 Still testing locally for the Github + Lambda integration
