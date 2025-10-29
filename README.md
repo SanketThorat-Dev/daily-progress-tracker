@@ -59,4 +59,18 @@ docker run --rm -v "${PWD}:/var/task" -w /var/task amazonlinux:2023 /bin/bash -c
 dnf install -y python3.13 python3.13-pip zip && \
 pip3.13 install --no-cache-dir -r /var/task/requirements.txt -t /var/task/package && \
 cd /var/task/package && zip -r9 /var/task/deployment_package.zip . && \
-cd /var/task && zip -g deployment_package.zip lambda_function.py credentials.json token.json"
+cd /var/task && zip -g deployment_package.zip lambda_function.py credentials.json token.json" 
+```
+
+Upload Steps:
+
+Upload deployment_package.zip to AWS Lambda.
+
+Set the handler to:
+
+lambda_function.main
+
+
+Add environment variables (GITHUB_TOKEN, GITHUB_REPO, GITHUB_BRANCH).
+
+Create an EventBridge rule to trigger Lambda daily at 11:30 PM IST.
