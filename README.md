@@ -15,6 +15,9 @@ It integrates **Gmail API + GitHub API + AWS Lambda + EventBridge**, requiring *
 
 ---
 
+<img width="1536" height="1024" alt="ChatGPT Image Oct 12, 2025, 12_22_27 AM" src="https://github.com/user-attachments/assets/17a3d650-bef5-47c6-a833-0df401958bfb" />
+
+
 ## ⚙️ Core Workflow
 
 1. **Lambda Trigger (EventBridge):**  
