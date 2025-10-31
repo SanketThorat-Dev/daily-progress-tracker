@@ -1,0 +1,7 @@
+Today learned about Docker Images
+1. Docker file --> Image --> Container
+2. Docker file - It has the instructions to build an image
+3. Image - It is a blueprint that has all the steps to run application, the
+environment required, in order to create an container
+4. Commands like 'pull'  to pull the image & 'run' to run the container
+5. 'docker stop' to stop the running conatiner
