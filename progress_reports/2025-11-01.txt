@@ -1,0 +1,40 @@
+Today I created a small project using Docker and Java
+Project: Java Docker App – Print Current Date
+
+This is a simple Java application containerized using Docker. The goal of
+this project was to understand how to package and run a basic Java program
+inside a Docker container.
+
+What This Project Does:
+- A Java application (Main.java) that prints a greeting message along with
+the current system date and time.
+- The application is compiled and executed inside a Docker container using
+an OpenJDK base image.
+
+Tech Stack:
+- Java 17: Application code
+- Docker: Containerization
+- OpenJDK Alpine: Lightweight base image
+
+Project Structure:
+.
+├─ Dockerfile
+└─ src
+   └─ Main.java
+
+How It Works:
+1. Created a Dockerfile using a lightweight OpenJDK 17 Alpine base image.
+2. Copied the Java source file into the container and compiled it inside
+the image.
+3. Built the Docker image using:
+   docker build -t java-app .
+4. Ran the container to execute the program:
+   docker run java-app
+5. The container prints:
+   Hello, Docker! Current date: <current-date-time>
+
+Outcome:
+This project helped me learn:
+- How to containerize a Java application
+- Writing and structuring a Dockerfile
+- Building and running Docker images and containers on an AWS EC2 instance
