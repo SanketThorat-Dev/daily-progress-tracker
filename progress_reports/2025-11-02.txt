@@ -1,0 +1,8 @@
+Not much progress today but started with the basics of Docker Networking
+Also came across few docker commands like -
+1) docker attach -> to connect local terminal's std input, output etc with running Docker container's primary process
+2) docker -it -> to create an interactive terminal session within a Docker container
+3) docker stop -> to stop one/more containers
+4) docker -itd -> to run a container in the background
+5) docker exec -> to execute a command in a running container
+6) docker logs -> to fetch logs of a container
