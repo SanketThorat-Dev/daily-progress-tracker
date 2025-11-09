@@ -1,0 +1,54 @@
+Learnt about Docker Networks and their types -
+*1. Default Bridge Network*
+
+   -
+
+   Docker’s built-in bridge network.
+   -
+
+   Containers on this network can communicate using IP addresses, but
+   container name resolution is limited.
+   *Create Command:* (No command required as this is created by default)
+   Network name: bridge
+
+------------------------------
+*2. User-Defined Custom Bridge Network*
+
+   -
+
+   A custom bridge network created by the user for better
+   container-to-container communication and isolation.
+   -
+
+   It supports automatic DNS-based container name resolution and provides
+   improved network control.
+   *Create Command:*
+
+docker network create --driver bridge my-custom-bridge
+
+------------------------------
+*3. Host Network*
+
+   -
+
+   The container shares the host machine’s network directly.
+   -
+
+   It uses the host’s IP and ports, resulting in no network isolation
+   between the host and the container.
+   *Create Command:*
+
+docker network create --driver host my-host-net
+
+------------------------------
+*4. None Network*
+
+   -
+
+   Disables all networking for the container.
+   -
+
+   The container has no internal or external network access.
+   *Create Command:*
+
+docker network create --driver none my-none-net
