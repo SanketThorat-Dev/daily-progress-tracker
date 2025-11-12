@@ -1,0 +1,90 @@
+Learnt about Docker Compose -
+=========================================
+         🐳 Docker Compose Notes
+=========================================
+
+🧩 What is Docker Compose?
+
+Docker Compose is a tool that helps me run and manage multi-container
+Docker applications easily.
+Instead of starting each container manually with long 'docker run'
+commands, I can define everything
+(services, networks, volumes) inside a single 'docker-compose.yml' file.
+Then I can spin up the entire
+application stack with a single command.
+
+-----------------------------------------
+⚙️ Why do I use Docker Compose?
+
+- Makes it simple to run multiple containers together (like a web app and a
+database)
+- Keeps environments consistent across development, testing, and production
+- Supports environment variables, custom networks, and volumes
+- Saves time by managing the entire stack from one YAML file
+
+-----------------------------------------
+🧾 Common Commands
+
+docker compose up          → Builds (if needed) and starts all services
+docker compose down        → Stops and removes containers, networks, and
+volumes
+docker compose build       → Builds or rebuilds the service images
+docker compose ps          → Lists running containers
+docker compose logs        → Displays logs from all running services
+docker compose exec <service> <command>  → Runs a command inside a running
+service
+
+(Note: In older versions, 'docker-compose' with a hyphen was used.)
+
+-----------------------------------------
+📘 Example docker-compose.yml
+
+version: '3.8'
+
+services:
+  web:
+    image: nginx:latest
+    ports:
+      - "8080:80"
+    volumes:
+      - ./html:/usr/share/nginx/html
+
+  db:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: example
+    volumes:
+      - db_data:/var/lib/mysql
+
+volumes:
+  db_data:
+
+-----------------------------------------
+🧠 How it Works
+
+- 'web' runs an Nginx container serving local HTML files on port 8080.
+- 'db' runs a MySQL container with persistent storage and environment
+variables.
+- Both containers automatically connect over the same network created by
+Docker Compose.
+
+To start everything:
+    docker compose up -d
+
+To stop and clean up:
+    docker compose down
+
+-----------------------------------------
+🌍 Real-World Use Cases
+
+- Local development (e.g., Node.js app + MongoDB or Flask app + Redis)
+- CI/CD testing environments to mimic production
+- Running multiple microservices locally
+- Learning how containers communicate and use volumes
+
+-----------------------------------------
+✅ Summary
+
+Docker Compose = One YAML file to define, run, and manage multi-container
+applications.
+It’s a must-have tool for any DevOps or cloud environment setup.
