@@ -1,0 +1,103 @@
+Today learnt about Docker Registry and multi-stage docker
+=========================================
+        🐳 Docker Registry & Multi-Stage Builds
+=========================================
+
+📦 1. Docker Registry
+
+A **Docker Registry** is a storage and distribution system for Docker
+images.
+It’s where images are stored, shared, and pulled from.
+
+-----------------------------------------
+🧩 What is it?
+
+- It’s like a repository for your Docker images.
+- The most common public registry is **Docker Hub** (hub.docker.com).
+- You can also host **private registries** (for organizations or internal
+use).
+- Each registry can contain multiple repositories, and each repository can
+have multiple tagged versions of an image.
+
+-----------------------------------------
+🔧 Common Commands
+
+# Login to a registry
+docker login
+
+# Tag an image
+docker tag myapp:latest myusername/myapp:v1
+
+# Push an image to Docker Hub
+docker push myusername/myapp:v1
+
+# Pull an image from Docker Hub
+docker pull myusername/myapp:v1
+
+# List images
+docker images
+
+-----------------------------------------
+📘 Example
+
+Suppose I have a local image named `myapp:latest`.
+I want to push it to Docker Hub.
+
+Commands:
+    docker tag myapp:latest sanket/myapp:v1
+    docker push sanket/myapp:v1
+
+Now anyone (or my servers) can pull it using:
+    docker pull sanket/myapp:v1
+
+-----------------------------------------
+🌍 Real-World Use Cases
+
+- Storing production-ready images.
+- Sharing base images across multiple projects.
+- Versioning and distributing internal application images.
+- Integrating with CI/CD to automatically push new builds.
+
+-----------------------------------------
+🧠 Summary
+
+Docker Registry = A central place to store and share container images.
+It makes image distribution and deployment faster and more reliable.
+
+=========================================
+        🏗️ Multi-Stage Docker Builds
+=========================================
+
+🧩 What is it?
+
+A **Multi-Stage Build** is a Docker feature that helps you create smaller,
+more efficient images.
+It allows you to use **multiple FROM statements** in one Dockerfile —
+building your app in one stage and copying only the necessary artifacts
+into a final lightweight image.
+
+-----------------------------------------
+⚙️ Why use Multi-Stage Builds?
+
+- Reduces final image size.
+- Keeps build tools and dependencies out of production images.
+- Improves security and performance.
+- Makes Dockerfiles cleaner and easier to maintain.
+
+-----------------------------------------
+📘 Example
+
+Here’s an example Dockerfile using multi-stage builds:
+
+```dockerfile
+# Stage 1: Build the application
+FROM golang:1.20 AS builder
+WORKDIR /app
+COPY . .
+RUN go build -o main .
+
+# Stage 2: Run the application
+FROM alpine:latest
+WORKDIR /app
+COPY --from=builder /app/main .
+CMD ["./main"]
