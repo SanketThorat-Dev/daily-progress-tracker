@@ -1,0 +1,1 @@
+Saw video and deployed a web application with nginx and MySQL using Docker.
