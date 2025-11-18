@@ -1,0 +1,189 @@
+Started with Jenkins Declarative pipelines -
+=========================================
+        🧱 Jenkins Declarative Pipelines
+=========================================
+
+A **Declarative Pipeline** is a structured and easy-to-read syntax for
+defining CI/CD pipelines in Jenkins.
+It is written inside a `Jenkinsfile` and focuses on simplicity,
+readability, and maintainability.
+
+Declarative pipelines were introduced to make Jenkins pipelines:
+- Cleaner and more structured
+- Beginner-friendly
+- Easier to maintain in Git
+- Less error-prone compared to scripted pipelines
+
+
+=========================================
+1. 🧩 Structure of a Declarative Pipeline
+=========================================
+
+Every Declarative Pipeline follows this structure:
+
+pipeline {
+    agent any
+    stages {
+        stage('Build') {
+            steps {
+                echo "Building..."
+            }
+        }
+    }
+}
+
+Main sections:
+
+- pipeline {}      → Root of the pipeline
+- agent            → Defines where the pipeline should run
+- stages           → Contains all pipeline stages
+- stage            → A single part of CI/CD (Build, Test, Deploy)
+- steps            → Commands executed inside a stage
+- post             → Actions executed after pipeline completion
+
+
+=========================================
+2. 🎯 agent Section
+=========================================
+
+Defines the node or environment in which the pipeline will run.
+
+Examples:
+
+agent any
+    → Run on any available Jenkins node
+
+agent none
+    → No global agent; define per stage
+
+Run inside a Docker container:
+agent {
+    docker { image 'node:18-alpine' }
+}
+
+
+=========================================
+3. 🧱 stages & steps
+=========================================
+
+Stages represent logical steps in the pipeline.
+Steps are the actual commands inside each stage.
+
+Example:
+
+stages {
+    stage('Build') {
+        steps {
+            sh 'npm install'
+        }
+    }
+
+    stage('Test') {
+        steps {
+            sh 'npm test'
+        }
+    }
+}
+
+
+=========================================
+4. 🌐 environment Block
+=========================================
+
+Used to set environment variables.
+
+environment {
+    APP_ENV = "dev"
+    VERSION = "1.0.0"
+}
+
+
+=========================================
+5. 🔁 post Block
+=========================================
+
+Executed after pipeline completion.
+
+post {
+    success { echo "Pipeline succeeded!" }
+    failure { echo "Pipeline failed!" }
+    always  { echo "This runs every time." }
+}
+
+
+=========================================
+6. 📘 Full Example Declarative Pipeline
+=========================================
+
+pipeline {
+    agent any
+
+    environment {
+        APP_NAME = "myapp"
+    }
+
+    stages {
+        stage('Build') {
+            steps {
+                echo "Building ${APP_NAME}..."
+                sh 'mvn package'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                sh 'mvn test'
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                echo "Deploying application..."
+            }
+        }
+    }
+
+    post {
+        success { echo "Pipeline completed successfully!" }
+        failure { echo "Pipeline failed!" }
+    }
+}
+
+
+=========================================
+7. 🌍 Real-World Usage
+=========================================
+
+Declarative pipelines are used for:
+
+- Building applications (Java, Node.js, Python, etc.)
+- Running automated tests
+- Deploying to servers, cloud, Docker, Kubernetes
+- Automating CI/CD workflows
+- Running static code analysis and security scans
+- Versioning CI/CD pipelines in Git
+
+Why teams choose Declarative Pipelines:
+- Standardized syntax
+- Easy to read and maintain
+- Clearly defined blocks and rules
+- Ideal for most CI/CD workflows
+
+
+=========================================
+✅ Summary
+=========================================
+
+Declarative Pipeline:
+    → A clean, structured Jenkins pipeline format
+
+Jenkinsfile:
+    → Stores the pipeline as code in Git
+
+Best For:
+    → Build → Test → Deploy CI/CD workflows
+
+Supports Docker:
+    → Stages can run inside Docker containers
+
+Simpler and more maintainable than scripted pipelines.
