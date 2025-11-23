@@ -1,0 +1,4 @@
+Revised Jenkins
+1) Installation
+2) Pipelines
+3) Agent (Multi Node)
