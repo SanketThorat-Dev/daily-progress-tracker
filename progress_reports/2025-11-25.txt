@@ -1,0 +1,130 @@
+=========================================
+   🐳 Jenkins + Docker Compose + Webhooks
+=========================================
+
+Today I learned how Jenkins works with Docker Compose, how to securely push
+Docker images, and how to trigger builds automatically using GitHub
+webhooks.
+
+These are important CI/CD concepts used in real production pipelines.
+
+
+=========================================
+1. 🧱 Using Docker Compose in Jenkins Pipeline
+=========================================
+
+In production, we DO NOT use `docker run` manually inside pipelines.
+
+Instead, we use **Docker Compose** because:
+- It manages multiple services together
+- It avoids running duplicate containers
+- It ensures predictable environment setup
+- It is closer to real-world deployment setups
+
+What I learned:
+- How to check if a container is already running
+- How to avoid re-running the same service
+- How to use `docker-compose up -d` inside a Jenkins stage
+
+Example Jenkins usage:
+
+stage('Start Services') {
+    steps {
+        sh 'docker compose -f docker-compose.yml up -d'
+    }
+}
+
+This ensures the environment is brought up only once and kept consistent.
+
+
+=========================================
+2. 🔐 Securely Pushing Docker Images to Docker Hub
+=========================================
+
+I learned how to securely store Docker Hub credentials inside Jenkins using:
+
+- **Jenkins Credentials Store**
+- **Environment variables**
+- **Credentials binding**
+
+This keeps username/password safe and hidden from:
+- The Jenkinsfile
+- GitHub repo
+- Console output (masked)
+
+Example:
+
+withCredentials([usernamePassword(credentialsId: 'dockerhub-creds',
+                                  usernameVariable: 'DOCKER_USER',
+                                  passwordVariable: 'DOCKER_PASS')]) {
+    sh '''
+        echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER"
+--password-stdin
+        docker build -t myapp .
+        docker push myapp
+    '''
+}
+
+This is the correct professional way to push images.
+
+
+=========================================
+3. 🔔 GitHub Webhooks Triggering Jenkins Jobs
+=========================================
+
+I learned how GitHub can automatically trigger a Jenkins pipeline whenever:
+
+- Code is pushed
+- PR is merged
+- Branch is updated
+
+How it works:
+1. GitHub sends a webhook event
+2. Jenkins receives it
+3. Jenkins pipeline starts automatically
+
+This creates full CI/CD automation.
+
+Real-world flow:
+Developer → Push code → GitHub → Webhook → Jenkins builds → Runs tests →
+Deploys
+
+
+=========================================
+4. 📘 Example Workflow (What I Achieved Today)
+=========================================
+
+- Jenkins pulls code from GitHub
+- Docker Compose starts services (only if not already running)
+- Jenkins builds Docker image
+- Credentials are used securely to log in to Docker Hub
+- Image is pushed to Docker Hub
+- GitHub webhook triggers the pipeline for every commit
+
+This matches how real CI/CD pipelines work in companies.
+
+
+=========================================
+5. 🌍 Real-World Usage
+=========================================
+
+These concepts are used in production for:
+
+- Automating builds for microservices
+- Starting dependent services using Compose
+- Securely storing cloud credentials
+- Publishing images to Docker Hub, ECR, GCR, etc.
+- Auto-triggering deployments using webhooks
+- End-to-end CI/CD pipelines
+
+
+=========================================
+✅ Summary of Today
+=========================================
+
+✔ Used Docker Compose inside Jenkins pipeline
+✔ Prevented duplicate containers from running
+✔ Learned proper credential management in Jenkins
+✔ Pushed Docker image securely to Docker Hub
+✔ Configured GitHub webhook for auto-triggering builds
+✔ Built a real CI/CD workflow end-to-end
