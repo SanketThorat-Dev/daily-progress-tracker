@@ -1,0 +1,150 @@
+=========================================
+        📚 Jenkins Shared Libraries
+=========================================
+
+Today I learned about **Jenkins Shared Libraries**, which allow us to store
+reusable pipeline code in a central Git repository.
+
+This is used in real-world CI/CD setups to avoid repeating the same
+pipeline logic across multiple Jenkinsfiles.
+
+
+=========================================
+1. 🧩 What Are Shared Libraries?
+=========================================
+
+Shared Libraries let developers:
+
+- Write reusable functions, steps, and pipeline logic
+- Maintain common CI/CD logic in one place
+- Reduce copy-paste across multiple pipelines
+- Keep Jenkinsfiles clean and simple
+
+A Shared Library is typically stored in a Git repository and contains:
+
+- vars/        → Groovy scripts accessible as functions
+- src/         → Groovy classes and packages
+- resources/   → Templates, YAML, files
+- Jenkinsfile or documentation
+
+
+=========================================
+2. 🛠 Example Usage
+=========================================
+
+Suppose I create a shared function in:
+
+vars/hello.groovy:
+
+def call() {
+    echo "Hello from Shared Library!"
+}
+
+In my Jenkinsfile:
+
+@Library('my-shared-lib') _
+pipeline {
+    agent any
+    stages {
+        stage('Test') {
+            steps {
+                hello()     // calling shared library function
+            }
+        }
+    }
+}
+
+This makes pipelines cleaner and easier to maintain.
+
+
+=========================================
+3. 🚀 Real-World Usage of Shared Libraries
+=========================================
+
+Companies use Shared Libraries to handle:
+
+- Standard build stages for all services
+- Security scanning steps
+- Docker build and push functions
+- Kubernetes deployment logic
+- Notification patterns (Slack, Teams, Email)
+- Reusable helper functions (Git tag, versioning, etc.)
+
+It ensures all projects follow the same CI/CD standards.
+
+
+=========================================
+        👥 Jenkins Role-Based Access Control
+=========================================
+
+I also learned about **user-based role management** in Jenkins, used to
+control what each user can see or do.
+
+This is essential for production Jenkins setups.
+
+
+=========================================
+4. 🔐 Role-Based Strategy Plugin
+=========================================
+
+Jenkins uses the **Role-Based Authorization Strategy** plugin to manage:
+
+- Global Roles
+- Project Roles
+- Agent (Node) Roles
+
+Examples:
+
+- Admin → Full control
+- Developer → Create pipelines, run builds
+- Viewer → Read-only access
+- DevOps → Manage nodes and credentials
+
+This helps prevent unauthorized access to:
+
+- Pipelines
+- Credentials
+- Build logs
+- Deployment jobs
+
+
+=========================================
+5. 🧭 How Roles Are Assigned
+=========================================
+
+Steps I learned:
+
+1. Install **Role-Based Strategy Plugin**
+2. Go to *Manage Jenkins → Configure Global Security*
+3. Choose **Role-Based Authorization Strategy**
+4. Create roles:
+   - global roles
+   - project roles
+5. Assign roles to users or groups
+
+This keeps Jenkins secure and organized.
+
+
+=========================================
+6. 🌍 Real-World Usage of RBAC
+=========================================
+
+Used for:
+
+- Restricting junior developers from editing production pipelines
+- Allowing testers to trigger only specific jobs
+- Protecting cloud credentials and secrets
+- Enforcing enterprise security policies
+- Giving DevOps full access while limiting others
+
+
+=========================================
+✅ Summary of Today
+=========================================
+
+✔ Understood Jenkins Shared Libraries
+✔ Learned how to create reusable pipeline stages
+✔ Saw how real companies maintain centralized CI/CD logic
+✔ Understood user-based role management
+✔ Learned how roles secure projects and credentials
+✔ Saw how RBAC is essential for production Jenkins
