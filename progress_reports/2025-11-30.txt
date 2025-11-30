@@ -1,0 +1,1 @@
+Studied from AWS book about EC2
