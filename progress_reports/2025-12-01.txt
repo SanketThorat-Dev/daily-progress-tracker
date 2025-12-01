@@ -1,0 +1,2 @@
+Watched the video about Wanderlust project till the installation of the
+required dependencies and then did Mock interview for Devops basics!!
