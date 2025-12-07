@@ -1,0 +1,136 @@
+=========================================
+        ☸️ Kubernetes
+=========================================
+
+Today I started learning Kubernetes, its architecture, and how to create a
+local Kubernetes cluster using **KIND** and **Minikube**.
+
+This marks the beginning of working with container orchestration!
+
+
+=========================================
+1. 🏗️ Kubernetes Architecture – What I Learned
+=========================================
+
+Kubernetes is built on a **Master–Worker** (Control Plane + Nodes)
+architecture.
+
+Main components:
+
+-----------------------------------------
+🔹 Control Plane (Master)
+-----------------------------------------
+1. API Server
+   - The main entry point to Kubernetes
+   - All kubectl requests go here
+
+2. Controller Manager
+   - Ensures the cluster is in the desired state
+   - Handles scaling, rollout, node monitoring
+
+3. Scheduler
+   - Decides which pod runs on which node
+
+4. etcd
+   - The distributed key-value store
+   - Stores cluster state and configuration
+
+
+-----------------------------------------
+🔹 Worker Nodes
+-----------------------------------------
+1. Kubelet
+   - Talks to the API Server
+   - Ensures containers are running
+
+2. Kube Proxy
+   - Manages networking, routing, service communication
+
+3. Container Runtime
+   - Runs containers (Docker, containerd, CRI-O, etc.)
+
+All these work together to keep the cluster running reliably.
+
+
+=========================================
+2. 🧪 Creating Local Kubernetes Clusters
+=========================================
+
+Today I learned two tools for creating local Kubernetes clusters:
+
+
+=========================================
+   🐳 KIND (Kubernetes IN Docker)
+=========================================
+
+- Creates Kubernetes clusters using Docker containers
+- Lightweight and fast
+- Good for testing, CI/CD pipelines, GitHub Actions
+- Cluster runs entirely inside Docker
+
+Basic command:
+
+kind create cluster --name dev-cluster
+
+This creates:
+- Control plane as a Docker container
+- Worker nodes as Docker containers
+
+
+=========================================
+   🎡 Minikube
+=========================================
+
+- A single-node Kubernetes cluster for local development
+- Uses a VM or Docker driver
+- Great for learning Kubernetes resources (pods, services, deployments)
+
+Start a cluster:
+
+minikube start
+
+Check status:
+
+minikube status
+
+Minikube also provides:
+- Built-in dashboard
+- Add-ons (ingress, metrics-server, registry)
+
+
+=========================================
+3. 🌍 Real-World Usage of KIND & Minikube
+=========================================
+
+These tools are used for:
+
+- Learning Kubernetes architecture
+- Testing deployments locally before production
+- Practicing YAML manifests (pods, services, deployments)
+- Building CI/CD pipelines with Kubernetes integration
+- Trying out new Kubernetes tools, operators, controllers
+
+
+=========================================
+4. 🚀 What I Achieved Today
+=========================================
+
+✔ Understood Kubernetes architecture
+✔ Learned Control Plane vs Worker Nodes
+✔ Installed and created clusters with KIND
+✔ Installed and created clusters with Minikube
+✔ Learned when to use which tool
+✔ Took the first solid step into Kubernetes
+
+
+=========================================
+✅ Summary
+=========================================
+
+Kubernetes helps manage containers at scale.
+Today I learned its architecture and created clusters using:
+
+- KIND → lightweight, Docker-based cluster
+- Minikube → full local Kubernetes environment
+
+A strong start into the Kubernetes ecosystem! ⚡☸️
