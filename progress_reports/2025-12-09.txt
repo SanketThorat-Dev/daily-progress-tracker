@@ -1,0 +1,143 @@
+=========================================
+      🗂️ Kubernetes – Namespaces & Pods
+=========================================
+
+Today I completed two fundamental Kubernetes topics:
+**Namespaces** and **Pods**.
+
+These form the foundation of how applications are organized and run in a
+Kubernetes cluster.
+
+
+=========================================
+1. 🗂️ Kubernetes Namespaces
+=========================================
+
+Namespaces are used to logically divide a Kubernetes cluster.
+
+They help in:
+- Organizing resources
+- Isolating environments
+- Applying access control
+- Managing multi-team and multi-tenant setups
+
+Each Kubernetes cluster comes with built-in namespaces:
+- default
+- kube-system
+- kube-public
+- kube-node-lease
+
+Why namespaces matter:
+- Prevent resource name conflicts
+- Allow different teams/projects to work in the same cluster
+- Enable resource quotas
+- Provide security boundaries
+
+
+-----------------------------------------
+🔧 Commands I Learned
+-----------------------------------------
+
+List namespaces:
+kubectl get ns
+
+Create a namespace:
+kubectl create ns dev
+
+Apply a manifest to a specific namespace:
+kubectl apply -f pod.yaml -n dev
+
+Delete a namespace:
+kubectl delete ns dev
+
+
+=========================================
+2. 🧱 Kubernetes Pods
+=========================================
+
+A **Pod** is the smallest deployable object in Kubernetes.
+It represents:
+- A single container
+OR
+- Multiple tightly-coupled containers (sidecar pattern)
+
+Pods share:
+- Network (same IP)
+- Storage (volumes)
+- Linux namespaces
+
+Pods are short-lived and not self-healing, so usually we don’t create
+standalone pods in production — we use Deployments.
+
+
+-----------------------------------------
+🔧 Pod Commands I Learned
+-----------------------------------------
+
+List pods:
+kubectl get pods
+
+Describe a pod:
+kubectl describe pod <name>
+
+Create a pod using a YAML file:
+kubectl apply -f pod.yaml
+
+Delete a pod:
+kubectl delete pod <name>
+
+
+-----------------------------------------
+📄 Example Pod Manifest I Studied
+-----------------------------------------
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mypod
+spec:
+  containers:
+    - name: nginx
+      image: nginx:latest
+
+
+=========================================
+3. 🧠 Important Concepts I Learned Today
+=========================================
+
+✔ Pods are NOT restarted automatically → Deployments manage that
+✔ Pods get their own IP address
+✔ Containers inside a pod share localhost
+✔ Namespaces help structure resources
+✔ kubectl commands depend on namespace context
+
+
+=========================================
+4. 🌍 Real-World Usage
+=========================================
+
+Namespaces are used for:
+- Dev / QA / Prod separation
+- Multi-team collaboration
+- Applying RBAC permissions
+- Limiting resource usage
+
+Pods are used for:
+- Running microservices
+- Injecting sidecar containers (logging, monitoring, proxies)
+- Running batch jobs / tasks
+- Hosting single-container apps like nginx, redis, python apps
+
+
+=========================================
+✅ Summary of Today
+=========================================
+
+✔ Learned Kubernetes Namespaces
+✔ Practiced kubectl namespace commands
+✔ Understood the structure of Pods
+✔ Created Pods using YAML
+✔ Learned Pod lifecycle and limitations
+✔ Strengthened Kubernetes basics
+
+A solid and important step forward in your Kubernetes journey! 🚀☸️
