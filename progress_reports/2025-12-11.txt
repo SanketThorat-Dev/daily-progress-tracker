@@ -1,0 +1,162 @@
+=========================================
+     📦 Kubernetes Workloads & Storage
+=========================================
+
+Today I learned about core Kubernetes workload controllers and storage
+components that are used to run applications reliably in production.
+
+
+=========================================
+1. 🔁 ReplicaSets (RS)
+=========================================
+
+A **ReplicaSet** ensures a specified number of pod replicas are always
+running.
+
+Key points:
+- Maintains the desired number of identical pods
+- Recreates pods if they crash or are deleted
+- Uses **labels & selectors** to identify which pods it manages
+- Typically used **indirectly** through Deployments
+
+Example:
+apiVersion: apps/v1
+kind: ReplicaSet
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: myapp
+
+
+=========================================
+2. 🧱 DaemonSets (DS)
+=========================================
+
+A **DaemonSet** ensures *exactly one pod per node* (or more if required).
+
+Used for:
+- Logging agents (Fluentd)
+- Monitoring agents (Prometheus Node Exporter)
+- Network plugins (Calico, Cilium)
+- Security agents
+
+Whenever a node is added or removed, the DaemonSet automatically adjusts
+pod placement.
+
+
+=========================================
+3. ⚙ Jobs
+=========================================
+
+A **Job** runs a task **once** and ensures it completes successfully.
+
+Use cases:
+- Database migrations
+- Batch processing
+- Data cleanup scripts
+- One-time initialization tasks
+
+Features:
+- Retries failed pods
+- Runs until successful completion
+- Supports parallel jobs
+
+
+=========================================
+4. ⏰ CronJobs
+=========================================
+
+A **CronJob** runs Jobs on a schedule (like Linux crontab).
+
+Use cases:
+- Daily backups
+- Scheduled reports
+- Nightly batch processing
+- Automatic cleanup tasks
+
+Example schedule:
+schedule: "0 * * * *"   → Every hour
+
+
+=========================================
+5. 💾 Kubernetes Storage Overview
+=========================================
+
+Kubernetes decouples storage from pods to ensure data survives pod restarts,
+rescheduling, and failures.
+
+Key storage components:
+- Persistent Volumes (PV)
+- Persistent Volume Claims (PVC)
+- Storage Classes (SC)
+
+These enable dynamic, reliable, and flexible storage provisioning.
+
+
+=========================================
+6. 📦 Persistent Volume (PV)
+=========================================
+
+A **Persistent Volume** represents actual storage in the cluster.
+
+Characteristics:
+- Created by cluster admins OR dynamically
+- Can use cloud storage, NFS, local disks, etc.
+- Lives independently of any pod
+
+Example types:
+- AWS EBS
+- GCP Persistent Disk
+- Azure Disk
+- NFS
+- CSI volumes
+
+
+=========================================
+7. 📝 Persistent Volume Claim (PVC)
+=========================================
+
+A **PVC** is a request for storage made by a pod or deployment.
+
+Features:
+- Developers request size, access mode, storage class
+- PVC binds to a compatible PV automatically
+- Pods use PVCs as mounted volumes
+
+Access modes:
+- ReadWriteOnce (RWO)
+- ReadOnlyMany (ROX)
+- ReadWriteMany (RWX)
+
+
+=========================================
+8. 🏷 Storage Classes
+=========================================
+
+A **Storage Class** defines *how* storage is provisioned dynamically.
+
+It contains:
+- Provisioner (e.g., aws-ebs, gce-pd, nfs)
+- Parameters (type, IOPS, encryption)
+- Reclaim policy
+
+When a PVC requests a Storage Class, Kubernetes automatically
+creates a PV using the class.
+
+Real usage:
+- Standard vs high-performance storage
+- SSD, HDD, encrypted disks
+- Cloud-managed storage provisioning
+
+
+=========================================
+✅ Summary of Today
+=========================================
+
+✔ Understood ReplicaSets (keep fixed number of pods)
+✔ Learned DaemonSets (one pod per node)
+✔ Completed Jobs and CronJobs (one-time & scheduled tasks)
+✔ Learned Kubernetes Storage basics
+✔ Understood PV, PVC, Storage Classes
+✔ Clear vision of how apps store and retain data in K8s
