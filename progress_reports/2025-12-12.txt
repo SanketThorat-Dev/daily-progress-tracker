@@ -1,0 +1,1 @@
+Revised the concepts of Kubernetes
