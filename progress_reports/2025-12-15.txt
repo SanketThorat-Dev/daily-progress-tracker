@@ -1,0 +1,182 @@
+=========================================
+   🌐 Kubernetes Ingress, StatefulSets,
+     Annotations & ConfigMaps
+=========================================
+
+Today I learned about advanced Kubernetes concepts used to manage
+application access, configuration, and state in real-world clusters.
+
+
+=========================================
+1. 🌐 Kubernetes Ingress
+=========================================
+
+An **Ingress** is a Kubernetes resource used to manage external access
+to services inside the cluster, usually via HTTP or HTTPS.
+
+Instead of exposing multiple services using NodePort or LoadBalancer,
+Ingress provides a single entry point.
+
+-----------------------------------------
+🧩 Why Ingress is Used
+-----------------------------------------
+
+- Provides HTTP/HTTPS routing
+- Supports path-based and host-based routing
+- Centralizes traffic management
+- Enables TLS (HTTPS) termination
+- Reduces cloud load balancer costs
+
+Ingress requires an **Ingress Controller** (like NGINX, Traefik, etc.)
+to actually work.
+
+-----------------------------------------
+📘 Example
+-----------------------------------------
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: app-ingress
+spec:
+  rules:
+  - host: myapp.example.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: myapp-service
+            port:
+              number: 80
+
+
+=========================================
+2. 🏷️ Kubernetes Annotations
+=========================================
+
+**Annotations** are key-value pairs used to attach metadata to Kubernetes
+objects.
+
+Unlike labels:
+- Annotations are NOT used for selection
+- They are used for configuration and information
+
+-----------------------------------------
+🧩 Use Cases
+-----------------------------------------
+
+- Ingress controller configuration
+- Load balancer settings
+- Monitoring and logging configs
+- Tool-specific metadata
+- Documentation or ownership info
+
+-----------------------------------------
+📘 Example
+-----------------------------------------
+
+metadata:
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+
+
+=========================================
+3. 📦 StatefulSets
+=========================================
+
+A **StatefulSet** is used to manage stateful applications in Kubernetes.
+
+Unlike Deployments:
+- Pods have stable identities
+- Pod names are predictable
+- Storage is persistent and tied to each pod
+
+-----------------------------------------
+🧩 Key Features
+-----------------------------------------
+
+- Stable pod names (e.g., app-0, app-1)
+- Stable network identity
+- Persistent storage per pod
+- Ordered pod creation and deletion
+
+-----------------------------------------
+📘 Example Use Cases
+-----------------------------------------
+
+- Databases (MySQL, PostgreSQL)
+- Message queues (Kafka)
+- Distributed systems (Zookeeper)
+- Applications requiring stable storage
+
+
+=========================================
+4. ⚙️ ConfigMaps
+=========================================
+
+A **ConfigMap** is used to store non-sensitive configuration data
+separately from application code.
+
+This allows configuration changes without rebuilding container images.
+
+-----------------------------------------
+🧩 What ConfigMaps Store
+-----------------------------------------
+
+- Environment variables
+- Application config files
+- Command-line arguments
+- Feature flags
+
+-----------------------------------------
+📘 Example
+-----------------------------------------
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+data:
+  APP_ENV: production
+  LOG_LEVEL: info
+
+Used in a Pod:
+
+envFrom:
+- configMapRef:
+    name: app-config
+
+
+=========================================
+5. 🌍 Real-World Usage
+=========================================
+
+These resources are commonly used for:
+
+- Exposing applications via HTTP/HTTPS
+- Managing traffic routing and TLS
+- Running stateful workloads safely
+- Externalizing application configuration
+- Keeping images immutable
+- Managing complex production setups
+
+
+=========================================
+✅ Summary
+=========================================
+
+Ingress:
+    → Manages external access and routing to services
+
+Annotations:
+    → Stores metadata and tool-specific configuration
+
+StatefulSets:
+    → Used for stateful applications with stable identity
+
+ConfigMaps:
+    → Stores non-sensitive configuration outside containers
+
+These are essential Kubernetes concepts for production-ready clusters.
