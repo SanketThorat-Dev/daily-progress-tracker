@@ -1,0 +1,155 @@
+=========================================
+            🔐 Kubernetes Secrets
+=========================================
+
+Today I learned about **Kubernetes Secrets**, which are used to store and
+manage
+sensitive information securely inside a Kubernetes cluster.
+
+Secrets help avoid hardcoding confidential data in Pod specs or container
+images.
+
+
+=========================================
+1. 🧩 What Are Kubernetes Secrets?
+=========================================
+
+A **Secret** is a Kubernetes object used to store sensitive data such as:
+
+- Passwords
+- API keys
+- Tokens
+- Database credentials
+- TLS certificates
+
+Secrets are stored in **base64-encoded format** and are accessed securely
+by Pods.
+
+
+=========================================
+2. 🎯 Why Use Secrets?
+=========================================
+
+Secrets are used to:
+
+- Protect sensitive information
+- Avoid exposing credentials in YAML files
+- Separate configuration from application code
+- Improve security and maintainability
+- Follow best practices for production workloads
+
+Hardcoding secrets in Deployments or Pods is NOT recommended.
+
+
+=========================================
+3. 🗂 Types of Kubernetes Secrets
+=========================================
+
+Common Secret types include:
+
+- Opaque (default)
+- kubernetes.io/dockerconfigjson (Docker registry credentials)
+- kubernetes.io/tls (TLS certificates)
+- Service account tokens
+
+Most application secrets use the **Opaque** type.
+
+
+=========================================
+4. 🛠 Creating a Secret
+=========================================
+
+Using kubectl command:
+
+kubectl create secret generic db-secret \
+  --from-literal=username=admin \
+  --from-literal=password=admin123
+
+Using YAML file:
+
+apiVersion: v1
+kind: Secret
+metadata:
+  name: db-secret
+type: Opaque
+data:
+  username: YWRtaW4=
+  password: YWRtaW4xMjM=
+
+(Note: Values must be base64 encoded)
+
+
+=========================================
+5. 🔗 Using Secrets in Pods
+=========================================
+
+Secrets can be consumed in two main ways:
+
+1. As Environment Variables
+2. As Mounted Volumes
+
+Example (Environment Variable):
+
+env:
+- name: DB_USER
+  valueFrom:
+    secretKeyRef:
+      name: db-secret
+      key: username
+
+Example (Volume Mount):
+
+volumes:
+- name: secret-volume
+  secret:
+    secretName: db-secret
+
+
+=========================================
+6. 🌍 Real-World Usage
+=========================================
+
+Secrets are used in production for:
+
+- Database credentials
+- Cloud provider keys
+- OAuth tokens
+- Docker registry authentication
+- SSL/TLS certificates
+- Application configuration secrets
+
+They are often combined with:
+- ConfigMaps (for non-sensitive config)
+- RBAC (to restrict secret access)
+- External secret managers (Vault, AWS Secrets Manager)
+
+
+=========================================
+7. 🔐 Security Best Practices
+=========================================
+
+- Never commit secrets to Git repositories
+- Restrict access using RBAC
+- Use namespaces to isolate secrets
+- Rotate secrets regularly
+- Encrypt secrets at rest (etcd encryption)
+- Prefer external secret managers for production
+
+
+=========================================
+✅ Summary
+=========================================
+
+Kubernetes Secrets:
+    → Secure storage for sensitive data
+
+Used For:
+    → Passwords, tokens, certificates, keys
+
+Accessed By:
+    → Pods via environment variables or volumes
+
+Best Practice:
+    → Never hardcode secrets in YAML files
+
+Essential for secure Kubernetes deployments.
