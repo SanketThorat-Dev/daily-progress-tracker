@@ -1,0 +1,203 @@
+=========================================
+   ☸️ Kubernetes: Secrets, Quotas & Scheduling
+=========================================
+
+Today I learned some very important Kubernetes concepts related to
+security, resource management, application health, and node scheduling.
+
+
+=========================================
+1. 🔐 Kubernetes Secrets
+=========================================
+
+A **Secret** is used to store sensitive information such as:
+- Passwords
+- Tokens
+- API keys
+- Certificates
+
+Secrets are safer than hardcoding values inside Pod definitions.
+
+-----------------------------------------
+🧩 Why use Secrets?
+-----------------------------------------
+- Keeps sensitive data out of YAML files
+- Prevents secrets from being exposed in Git
+- Can be injected into Pods as environment variables or files
+- Improves security and compliance
+
+-----------------------------------------
+📘 Example
+-----------------------------------------
+
+Create a secret:
+kubectl create secret generic db-secret \
+  --from-literal=username=admin \
+  --from-literal=password=pass123
+
+Use secret in a Pod:
+env:
+- name: DB_USER
+  valueFrom:
+    secretKeyRef:
+      name: db-secret
+      key: username
+
+-----------------------------------------
+🌍 Real-World Usage
+-----------------------------------------
+- Database credentials
+- Cloud provider keys
+- TLS certificates
+- OAuth tokens
+
+
+=========================================
+2. 📦 Resource Requests & Limits
+=========================================
+
+**Resource Requests and Limits** control how much CPU and memory a Pod
+can request and use.
+
+-----------------------------------------
+🧩 Definitions
+-----------------------------------------
+- Request → Minimum guaranteed resources
+- Limit   → Maximum resources a Pod can use
+
+-----------------------------------------
+📘 Example
+-----------------------------------------
+
+resources:
+  requests:
+    cpu: "250m"
+    memory: "256Mi"
+  limits:
+    cpu: "500m"
+    memory: "512Mi"
+
+-----------------------------------------
+🌍 Why This Matters
+-----------------------------------------
+- Prevents one Pod from consuming all resources
+- Helps scheduler place Pods correctly
+- Avoids node crashes due to overuse
+
+
+=========================================
+3. 🧮 Resource Quotas
+=========================================
+
+A **ResourceQuota** restricts the total amount of resources
+that can be used within a namespace.
+
+-----------------------------------------
+🧩 What It Controls
+-----------------------------------------
+- Number of Pods
+- CPU usage
+- Memory usage
+- Services, PVCs, etc.
+
+-----------------------------------------
+📘 Example
+-----------------------------------------
+
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: dev-quota
+spec:
+  hard:
+    pods: "10"
+    requests.cpu: "2"
+    requests.memory: 4Gi
+    limits.cpu: "4"
+    limits.memory: 8Gi
+
+-----------------------------------------
+🌍 Real-World Usage
+-----------------------------------------
+- Prevents teams from overusing cluster resources
+- Ensures fair resource sharing
+- Enforced in multi-tenant clusters
+
+
+=========================================
+4. ❤️ Probes (Liveness, Readiness, Startup)
+=========================================
+
+**Probes** are used by Kubernetes to check the health of containers.
+
+-----------------------------------------
+🧩 Types of Probes
+-----------------------------------------
+- Liveness Probe   → Checks if container should be restarted
+- Readiness Probe → Checks if Pod can receive traffic
+- Startup Probe   → Checks slow-starting applications
+
+-----------------------------------------
+📘 Example
+-----------------------------------------
+
+livenessProbe:
+  httpGet:
+    path: /health
+    port: 8080
+  initialDelaySeconds: 10
+  periodSeconds: 5
+
+-----------------------------------------
+🌍 Real-World Usage
+-----------------------------------------
+- Auto-restart failed containers
+- Prevent traffic to unhealthy Pods
+- Improve application reliability
+
+
+=========================================
+5. 🚫 Taints and Tolerations
+=========================================
+
+**Taints and Tolerations** control which Pods can be scheduled on which
+nodes.
+
+-----------------------------------------
+🧩 Concept
+-----------------------------------------
+- Taint → Applied on a node (repels Pods)
+- Toleration → Applied on Pods (allows scheduling)
+
+-----------------------------------------
+📘 Example
+-----------------------------------------
+
+Add taint to node:
+kubectl taint nodes node1 env=prod:NoSchedule
+
+Pod toleration:
+tolerations:
+- key: "env"
+  operator: "Equal"
+  value: "prod"
+  effect: "NoSchedule"
+
+-----------------------------------------
+🌍 Real-World Usage
+-----------------------------------------
+- Separate production and non-production workloads
+- Reserve nodes for critical workloads
+- Run system Pods on dedicated nodes
+
+
+=========================================
+✅ Summary of Today
+=========================================
+
+✔ Learned how Kubernetes stores sensitive data using Secrets
+✔ Understood resource requests and limits for Pods
+✔ Learned how Resource Quotas restrict namespace usage
+✔ Understood application health using probes
+✔ Learned node-level scheduling using taints and tolerations
+✔ Covered key production-grade Kubernetes concepts
