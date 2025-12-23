@@ -1,0 +1,2 @@
+Started with Python for Devops in order to upgrade current knowledge with
+python
