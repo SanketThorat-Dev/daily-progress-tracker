@@ -1,0 +1,1 @@
+Not much progress today, just revised basic K8s
