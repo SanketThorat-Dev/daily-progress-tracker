@@ -1,0 +1,153 @@
+=========================================
+   📈 Kubernetes Horizontal Pod Autoscaler
+=========================================
+
+Today I started learning about **Horizontal Pod Autoscaling (HPA)**, which
+automatically scales the number of Pods based on resource usage or metrics.
+
+
+=========================================
+1. 🧩 What is HPA?
+=========================================
+
+**HPA** automatically increases or decreases the number of Pod replicas
+in a Deployment, ReplicaSet, or StatefulSet.
+
+Scaling is based on:
+- CPU utilization
+- Memory utilization
+- Custom or external metrics
+
+HPA helps applications handle variable traffic without manual scaling.
+
+
+=========================================
+2. 🔄 How HPA Works
+=========================================
+
+HPA continuously monitors metrics and compares them with desired values.
+
+Flow:
+Metrics Server
+    ↓
+HPA Controller
+    ↓
+Deployment / ReplicaSet
+    ↓
+Pods scale up or down
+
+HPA updates the `replicas` field automatically.
+
+
+=========================================
+3. ⚙ Prerequisites for HPA
+=========================================
+
+To use HPA, the following are required:
+
+- Metrics Server installed in the cluster
+- Resource requests defined in Pods
+- Deployment or scalable controller
+
+Without resource requests, HPA will not function correctly.
+
+
+=========================================
+4. 📦 HPA Based on CPU
+=========================================
+
+Most commonly, HPA is configured using CPU utilization.
+
+Example command:
+
+kubectl autoscale deployment myapp \
+  --cpu-percent=50 \
+  --min=2 \
+  --max=10
+
+Meaning:
+- Maintain average CPU at 50%
+- Minimum Pods: 2
+- Maximum Pods: 10
+
+
+=========================================
+5. 📘 HPA YAML Example
+=========================================
+
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: myapp-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: myapp
+  minReplicas: 2
+  maxReplicas: 10
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 50
+
+
+=========================================
+6. 📊 Types of Metrics Used
+=========================================
+
+HPA can scale based on:
+
+- Resource metrics (CPU, Memory)
+- Custom metrics (requests per second)
+- External metrics (cloud monitoring systems)
+
+Advanced setups use:
+- Prometheus
+- Custom Metrics API
+
+
+=========================================
+7. 🌍 Real-World Usage
+=========================================
+
+HPA is widely used in production for:
+
+- Handling traffic spikes automatically
+- Reducing cost by scaling down during low usage
+- Scaling microservices independently
+- Ensuring application availability
+- Improving user experience during peak load
+
+
+=========================================
+8. ⚠ Limitations
+=========================================
+
+- Scales Pods, not nodes (nodes need Cluster Autoscaler)
+- Requires proper resource requests
+- Scaling is not instant
+- Works best with stateless applications
+
+
+=========================================
+✅ Summary
+=========================================
+
+Horizontal Pod Autoscaler:
+    → Automatically scales Pods based on metrics
+
+Requires:
+    → Metrics Server
+    → Resource requests
+
+Scales:
+    → Deployments, ReplicaSets, StatefulSets
+
+Used for:
+    → High availability
+    → Cost optimization
+    → Traffic-based scaling
