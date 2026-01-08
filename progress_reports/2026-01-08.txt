@@ -1,0 +1,2 @@
+Learnt about HPA in K8s, how it actually works and solved few problems on
+KodeKloud
