@@ -1,0 +1,153 @@
+=========================================
+   📊 Kubernetes Vertical Pod Autoscaler
+=========================================
+
+Today I learned about **Vertical Pod Autoscaler (VPA)**, which automatically
+adjusts CPU and memory requests and limits for Pods based on actual usage.
+
+
+=========================================
+1. 🧩 What is VPA?
+=========================================
+
+**VPA** helps optimize resource usage by **increasing or decreasing
+CPU and memory requests** for Pods.
+
+Unlike HPA:
+- VPA scales **resources per Pod**
+- HPA scales **number of Pods**
+
+VPA is useful when workloads are hard to size manually.
+
+
+=========================================
+2. 🔄 How VPA Works
+=========================================
+
+VPA continuously monitors Pod resource usage and provides recommendations.
+
+Flow:
+Metrics Server
+    ↓
+VPA Recommender
+    ↓
+VPA Updater
+    ↓
+Pod resource requests updated
+
+When changes are applied, Pods may be **restarted**.
+
+
+=========================================
+3. ⚙ VPA Components
+=========================================
+
+VPA consists of:
+
+- Recommender → Calculates resource recommendations
+- Updater     → Applies updates (may restart Pods)
+- Admission Controller → Sets resources on Pod creation
+
+
+=========================================
+4. 🎯 VPA Modes
+=========================================
+
+VPA supports different operating modes:
+
+-----------------------------------------
+🔹 Off
+-----------------------------------------
+- Only provides recommendations
+- Does not change Pod resources
+
+-----------------------------------------
+🔹 Initial
+-----------------------------------------
+- Applies recommendations only at Pod creation
+- No runtime updates
+
+-----------------------------------------
+🔹 Auto
+-----------------------------------------
+- Automatically updates resource requests
+- Restarts Pods if required
+
+
+=========================================
+5. 📘 VPA YAML Example
+=========================================
+
+apiVersion: autoscaling.k8s.io/v1
+kind: VerticalPodAutoscaler
+metadata:
+  name: myapp-vpa
+spec:
+  targetRef:
+    apiVersion: "apps/v1"
+    kind: Deployment
+    name: myapp
+  updatePolicy:
+    updateMode: "Auto"
+
+
+=========================================
+6. ⚠ Limitations & Considerations
+=========================================
+
+- Pod restarts may occur
+- Not ideal for latency-sensitive apps
+- Cannot be used with HPA on CPU/memory
+- Works best with long-running workloads
+
+VPA is mainly focused on **resource optimization**, not traffic scaling.
+
+
+=========================================
+7. 🌍 Real-World Usage
+=========================================
+
+VPA is used for:
+
+- Backend services with unpredictable load
+- Batch jobs and workers
+- Cost optimization
+- Right-sizing applications
+- Reducing over-provisioning
+
+Common approach:
+- Use VPA in recommendation mode first
+- Apply auto mode after confidence
+
+
+=========================================
+8. 🔄 HPA vs VPA (Quick Comparison)
+=========================================
+
+HPA:
+- Scales number of Pods
+- Based on CPU/memory/metrics
+- No Pod restarts
+
+VPA:
+- Scales CPU & memory per Pod
+- Based on usage history
+- Pod restarts possible
+
+
+=========================================
+✅ Summary
+=========================================
+
+Vertical Pod Autoscaler:
+    → Automatically adjusts Pod resource requests
+
+Modes:
+    → Off | Initial | Auto
+
+Best For:
+    → Resource optimization
+    → Hard-to-size workloads
+
+Key Note:
+    → Not used together with HPA on CPU/memory
