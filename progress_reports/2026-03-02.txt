@@ -1,0 +1,1 @@
+Solved one kodekloud problem and learned about Terraform environment
