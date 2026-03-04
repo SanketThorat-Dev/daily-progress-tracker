@@ -1,0 +1,2 @@
+a) Solved 1 kodekloud daily problem
+b) Completed Providers, variables and Conditional expressions in Terraform
