@@ -1,0 +1,2 @@
+Solved one kodekloud daily problem and watched a tutorial for writing YAML
+files
