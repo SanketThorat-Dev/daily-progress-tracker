@@ -1,0 +1,1 @@
+Solved one kodekloud problem and completed video-6 of terraform
